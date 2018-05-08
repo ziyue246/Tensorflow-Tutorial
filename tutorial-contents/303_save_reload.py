@@ -42,11 +42,15 @@ def save():
 
     # plotting
     pred, l = sess.run([o, loss], {tf_x: x, tf_y: y})
+
+    #pred = sess.run(o, {tf_x: x})
     plt.figure(1, figsize=(10, 5))
     plt.subplot(121)
     plt.scatter(x, y)
     plt.plot(x, pred, 'r-', lw=5)
     plt.text(-1, 1.2, 'Save Loss=%.4f' % l, fontdict={'size': 15, 'color': 'red'})
+
+    #plt.text(-1, 1.2, 'Save Loss=%.4f', fontdict={'size': 15, 'color': 'red'})
 
 
 def reload():

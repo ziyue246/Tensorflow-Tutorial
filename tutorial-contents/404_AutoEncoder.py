@@ -29,6 +29,9 @@ test_y = mnist.test.labels[:200]
 # plot one example
 print(mnist.train.images.shape)     # (55000, 28 * 28)
 print(mnist.train.labels.shape)     # (55000, 10)
+
+
+
 plt.imshow(mnist.train.images[0].reshape((28, 28)), cmap='gray')
 plt.title('%i' % np.argmax(mnist.train.labels[0]))
 plt.show()

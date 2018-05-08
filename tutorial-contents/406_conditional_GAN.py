@@ -11,6 +11,12 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+
 tf.set_random_seed(1)
 np.random.seed(1)
 

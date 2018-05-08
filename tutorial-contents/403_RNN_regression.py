@@ -13,15 +13,17 @@ import matplotlib.pyplot as plt
 
 
 # Hyper Parameters
-TIME_STEP = 10       # rnn time step
+TIME_STEP = 30       # rnn time step
 INPUT_SIZE = 1      # rnn input size
-CELL_SIZE = 32      # rnn cell size
+CELL_SIZE = 64      # rnn cell size
 LR = 0.02           # learning rate
 
 # show data
 steps = np.linspace(0, np.pi*2, 100, dtype=np.float32)
-x_np = np.sin(steps); y_np = np.cos(steps)    # float32 for converting torch FloatTensor
-plt.plot(steps, y_np, 'r-', label='target (cos)'); plt.plot(steps, x_np, 'b-', label='input (sin)')
+x_np = np.sin(steps);
+y_np = np.cos(steps)    # float32 for converting torch FloatTensor
+plt.plot(steps, y_np, 'r-', label='target (cos)');
+plt.plot(steps, x_np, 'b-', label='input (sin)')
 plt.legend(loc='best'); plt.show()
 
 # tensorflow placeholders
@@ -29,7 +31,7 @@ tf_x = tf.placeholder(tf.float32, [None, TIME_STEP, INPUT_SIZE])        # shape(
 tf_y = tf.placeholder(tf.float32, [None, TIME_STEP, INPUT_SIZE])          # input y
 
 # RNN
-rnn_cell = tf.contrib.rnn.BasicRNNCell(num_units=CELL_SIZE)
+rnn_cell = tf.contrib.rnn.BasicLSTMCell(num_units=CELL_SIZE)
 init_s = rnn_cell.zero_state(batch_size=1, dtype=tf.float32)    # very first hidden state
 outputs, final_s = tf.nn.dynamic_rnn(
     rnn_cell,                   # cell you have chosen
@@ -49,8 +51,8 @@ sess.run(tf.global_variables_initializer())     # initialize var in graph
 
 plt.figure(1, figsize=(12, 5)); plt.ion()       # continuously plot
 
-for step in range(60):
-    start, end = step * np.pi, (step+1)*np.pi   # time range
+for step in range(6000):
+    start, end = step * np.pi, (step+2)*np.pi   # time range
     # use sin predicts cos
     steps = np.linspace(start, end, TIME_STEP)
     x = np.sin(steps)[np.newaxis, :, np.newaxis]    # shape (batch, time_step, input_size)
@@ -62,7 +64,15 @@ for step in range(60):
     _, pred_, final_s_ = sess.run([train_op, outs, final_s], feed_dict)     # train
 
     # plotting
-    plt.plot(steps, y.flatten(), 'r-'); plt.plot(steps, pred_.flatten(), 'b-')
-    plt.ylim((-1.2, 1.2)); plt.draw(); plt.pause(0.05)
+    plt.plot(steps, y.flatten(), 'r-');
+    plt.plot(steps, pred_.flatten(), 'b-')
+    plt.ylim((-1.2, 1.2));
+    plt.draw();
 
-plt.ioff(); plt.show()
+    if(step%50==0):
+        plt.close()
+
+    plt.pause(0.05)
+
+plt.ioff();
+plt.show()

@@ -85,7 +85,7 @@ for step in range(600):
             low_dim_embs = tsne.fit_transform(flat_representation[:plot_only, :])
             labels = np.argmax(test_y, axis=1)[:plot_only]; plot_with_labels(low_dim_embs, labels)
 plt.ioff()
-
+plt.show()
 # print 10 predictions from test data
 test_output = sess.run(output, {tf_x: test_x[:10]})
 pred_y = np.argmax(test_output, 1)

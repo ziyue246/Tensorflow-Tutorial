@@ -34,6 +34,7 @@ class Net:
         l = tf.layers.dense(self.x, 20, tf.nn.relu)
         out = tf.layers.dense(l, 1)
         self.loss = tf.losses.mean_squared_error(self.y, out)
+        # LR learning rate
         self.train = opt(LR, **kwargs).minimize(self.loss)
 
 # different nets
@@ -50,6 +51,7 @@ losses_his = [[], [], [], []]   # record loss
 
 # training
 for step in range(300):          # for each training step
+    #   BATCH_SIZE
     index = np.random.randint(0, x.shape[0], BATCH_SIZE)
     b_x = x[index]
     b_y = y[index]
